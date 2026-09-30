@@ -4,8 +4,8 @@
   "description": "IIT BHU Architectural Experience - Animation Challenge",
   "main": "index.html",
   "scripts": {
-    "build": "echo 'Static build ready'",
-    "start": "npx serve ."
+    "build": "node build.js",
+    "start": "npx serve dist"
   },
   "keywords": [
     "iit-bhu",
