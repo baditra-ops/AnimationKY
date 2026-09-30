@@ -224,6 +224,35 @@ body.cursor-hover-tower .custom-cursor-label {
   opacity: 1;
 }
 
+/* Magnetic Cursor Elastic States */
+body.cursor-magnetic .custom-cursor-ring {
+  transition: width 0.22s var(--ease-cinematic), height 0.22s var(--ease-cinematic), border-color 0.2s ease, border-radius 0.2s ease;
+}
+
+body.cursor-magnetic-lock .custom-cursor-ring {
+  width: 52px;
+  height: 52px;
+  border-color: var(--accent-amber);
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 18px var(--accent-amber-glow), inset 0 0 8px rgba(245, 158, 11, 0.25);
+}
+
+body.cursor-magnetic-lock .custom-cursor-dot {
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff;
+  transform: translate(-50%, -50%) scale(1.35);
+}
+
+body.cursor-magnetic-btn .custom-cursor-ring {
+  width: 50px;
+  height: 38px;
+  border-radius: 20px;
+  border-color: var(--accent-cyan);
+  border-style: solid;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+
 /* Touch device media query */
 @media (hover: none) and (pointer: coarse) {
   .custom-cursor-dot,
