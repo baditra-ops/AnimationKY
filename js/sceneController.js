@@ -1,7 +1,7 @@
 /**
  * Unified Scene Controller & Virtual Camera
- * Controls virtual camera scale, camera translation, scroll-driven inspection depth,
- * and organic architectural breathing.
+ * Coordinates virtual camera flight, scroll-driven scrutiny,
+ * and state-machine transitions (INTRO -> REVEAL -> WOW_MOMENT -> INTERACTIVE).
  */
 
 import { CONFIG } from './config.js';
@@ -11,21 +11,23 @@ export class SceneController {
     this.promptEl = document.getElementById('explore-prompt');
     this.hudStatus = document.getElementById('hud-status-label');
     
-    // Normalized scene progress (0.0 = wide panorama, 1.0 = close architectural scrutiny)
-    this.targetProgress = 0.12;
-    this.currentProgress = 0.12;
+    // State machine: 'INTRO' | 'REVEAL' | 'WOW_MOMENT' | 'INTERACTIVE'
+    this.state = 'INTRO';
+
+    // Normalized scene progress (0.0 = wide panorama, 1.0 = close scrutiny)
+    this.targetProgress = 0.15;
+    this.currentProgress = 0.15;
     
-    // Virtual camera zoom (0.92x to 1.28x)
-    this.minZoom = 0.92;
-    this.maxZoom = 1.28;
+    // Virtual camera zoom (0.94x to 1.22x)
+    this.minZoom = CONFIG.camera.minZoom;
+    this.maxZoom = CONFIG.camera.maxZoom;
     this.targetZoom = 1.0;
     this.currentZoom = 1.0;
     
-    // Camera cinematic offsets for reveal stages
-    this.revealScale = 0.82;
-    this.revealTranslateY = 24;
+    // Scripted camera positions during reveal
+    this.revealScale = 0.84;
+    this.revealTranslateY = 22;
     this.revealTranslateX = 0;
-    this.isRevealControlled = true;
 
     // Organic breathing oscillation
     this.isBreathing = false;
@@ -47,17 +49,15 @@ export class SceneController {
     // Wheel scroll controls virtual camera inspection depth
     window.addEventListener('wheel', (e) => {
       this.dismissPrompt();
-      if (this.isRevealControlled) return;
+      if (this.state !== 'INTERACTIVE') return;
 
-      const delta = e.deltaY * 0.0007;
+      const delta = e.deltaY * 0.0006;
       this.targetProgress = Math.max(0.0, Math.min(1.0, this.targetProgress + delta));
-      
-      // Calculate target camera zoom
       this.targetZoom = this.minZoom + this.targetProgress * (this.maxZoom - this.minZoom);
 
       if (this.hudStatus && Math.abs(delta) > 0.01) {
         const zoomPercent = Math.round(this.targetZoom * 100);
-        this.hudStatus.textContent = `CAMERA ZOOM: ${zoomPercent}% // DEPTH SCRUTINY`;
+        this.hudStatus.textContent = `CAMERA ZOOM: ${zoomPercent}% // ARCHITECTURAL DEPTH`;
       }
     }, { passive: true });
 
@@ -69,15 +69,14 @@ export class SceneController {
     }, { passive: true });
 
     window.addEventListener('touchmove', (e) => {
-      if (this.isRevealControlled) return;
+      if (this.state !== 'INTERACTIVE') return;
       const touchY = e.touches[0].clientY;
-      const deltaY = (touchStartY - touchY) * 0.0022;
+      const deltaY = (touchStartY - touchY) * 0.002;
       touchStartY = touchY;
       this.targetProgress = Math.max(0.0, Math.min(1.0, this.targetProgress + deltaY));
       this.targetZoom = this.minZoom + this.targetProgress * (this.maxZoom - this.minZoom);
     }, { passive: true });
 
-    // User pointer activity dismisses prompt
     window.addEventListener('pointermove', () => {
       this.dismissPrompt();
     }, { passive: true });
@@ -90,15 +89,18 @@ export class SceneController {
     }
   }
 
+  setState(newState) {
+    this.state = newState;
+  }
+
+  getState() {
+    return this.state;
+  }
+
   setRevealCamera(scale, translateY, translateX = 0) {
     this.revealScale = scale;
     this.revealTranslateY = translateY;
     this.revealTranslateX = translateX;
-  }
-
-  releaseRevealControl() {
-    this.isRevealControlled = false;
-    this.targetZoom = 1.0;
   }
 
   enableBreathing() {
@@ -118,47 +120,41 @@ export class SceneController {
   }
 
   updatePhysics() {
-    const lerp = 0.08;
+    const lerp = CONFIG.camera.zoomLerpFactor;
     this.currentProgress += (this.targetProgress - this.currentProgress) * lerp;
     this.currentZoom += (this.targetZoom - this.currentZoom) * lerp;
 
-    if (this.isBreathing && !this.reducedMotion) {
+    if (this.isBreathing && !this.reducedMotion && this.state === 'INTERACTIVE') {
       this.breathTime += 1;
     }
   }
 
   getCurrentZoom() {
-    if (this.isRevealControlled) {
+    if (this.state !== 'INTERACTIVE') {
       return this.revealScale;
     }
     return this.currentZoom;
   }
 
   getCameraY() {
-    if (this.isRevealControlled) {
+    if (this.state !== 'INTERACTIVE') {
       return this.revealTranslateY;
     }
-    // Subtle elevation lift as zoom increases
     return (1 - this.currentProgress) * 4;
   }
 
   getCameraX() {
-    if (this.isRevealControlled) {
+    if (this.state !== 'INTERACTIVE') {
       return this.revealTranslateX;
     }
-    // Slight shift toward clock tower as we zoom closer
-    return this.currentProgress * -14;
+    return this.currentProgress * -10;
   }
 
   getBreathingOffset() {
-    if (this.isBreathing && !this.reducedMotion) {
+    if (this.isBreathing && !this.reducedMotion && this.state === 'INTERACTIVE') {
       return Math.sin(this.breathTime * CONFIG.camera.breathingSpeed) * CONFIG.camera.breathingScaleAmp;
     }
     return 0;
-  }
-
-  getProgress() {
-    return this.currentProgress;
   }
 
   destroy() {

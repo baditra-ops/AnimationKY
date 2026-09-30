@@ -1,6 +1,6 @@
 /**
  * Central Configuration & Architecture Constants
- * IIT BHU Architectural Experience
+ * IIT BHU Architectural Experience (Final Polish)
  */
 
 export const CONFIG = {
@@ -9,15 +9,13 @@ export const CONFIG = {
     aspectRatio: 1.5, // 3:2
     width: 750,
     height: 500,
-    // Clock Tower Hero Anchor
     clockTower: {
       xPercent: 62.53,
       yPercent: 30.6,
       dialYPercent: 29.6,
       spireApexYPercent: 15.0,
-      radiusPx: 120, // Proximity trigger threshold
+      radiusPx: 110,
     },
-    // Interactive Campus Proximity Zones (Normalized 0-100%)
     zones: [
       {
         id: 'tower',
@@ -50,47 +48,46 @@ export const CONFIG = {
     ]
   },
 
-  // Parallax Depth Factors (Multipliers for pointer offset)
+  // Restrained Parallax Parameters (Physically grounded, zero artificial float)
   parallax: {
-    blueprint: 0.012,
-    atmosphere: 0.024,
-    facade: 0.048,
-    foreground: 0.072,
-    overlay: 0.092,
-    tiltMaxY: 3.6, // Degrees max rotateY
-    tiltMaxX: 2.8, // Degrees max rotateX
-    lerpFactor: 0.075, // Smoothness coefficient
-    lightLerpFactor: 0.065
+    blueprint: 0.008,
+    atmosphere: 0.016,
+    facade: 0.038,
+    foreground: 0.058,
+    overlay: 0.075,
+    tiltMaxY: 2.8, // Degrees max rotateY
+    tiltMaxX: 2.2, // Degrees max rotateX
+    lerpFactor: 0.058, // Silky smooth inertia
+    lightLerpFactor: 0.055
   },
 
-  // Virtual Camera & Scroll Settings
+  // Virtual Camera & Scroll Parameters
   camera: {
-    minZoom: 0.98,
+    minZoom: 0.94,
     maxZoom: 1.22,
     defaultZoom: 1.0,
-    zoomLerpFactor: 0.08,
-    // Idle subtle breathing oscillation
-    breathingScaleAmp: 0.005, // 0.5% scale breathing
-    breathingSpeed: 0.0009
+    zoomLerpFactor: 0.075,
+    breathingScaleAmp: 0.0035, // 0.35% imperceptible breathing
+    breathingSpeed: 0.0007
   },
 
-  // Reveal Sequence Timing (in milliseconds)
+  // Reveal Sequence Timing (Choreographed Progression)
   timings: {
-    initProgressDuration: 1400,
+    initProgressDuration: 1300,
     stageA_Silhouette: 200,
-    stageB_StructuralWipe: 1100,
-    stageC_DetailSharpen: 2200,
-    stageD_LightSweep: 3200,
-    stageE_FullReveal: 4300,
-    wowMomentStart: 5200,
-    wowMomentDuration: 2600
+    stageB_StructuralWipe: 1200,
+    stageC_DetailSharpen: 2400,
+    stageD_LightSweep: 3600,
+    stageE_FullReveal: 4800,
+    wowMomentStart: 5800,
+    wowMomentDuration: 2400
   },
 
   // Particle System Parameters
   particles: {
-    desktopCount: 36,
-    mobileCount: 18,
-    maxSpeedX: 0.22,
-    maxSpeedY: 0.32
+    desktopCount: 32,
+    mobileCount: 16,
+    maxSpeedX: 0.18,
+    maxSpeedY: 0.28
   }
 };

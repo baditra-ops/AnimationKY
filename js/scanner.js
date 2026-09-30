@@ -1,7 +1,7 @@
 /**
- * Architectural Laser & Light Wash Scanner
- * Sweeps an optical analysis region across the IIT BHU facade,
- * dynamically highlighting CAD nodes and pulsing the clock tower as it crosses.
+ * Architectural Laser & Light Wash Scanner (Final Polish)
+ * Sweeps a restrained optical analysis wash across the facade,
+ * highlighting survey CAD nodes and gently pulsing the clock tower.
  */
 
 import { CONFIG } from './config.js';
@@ -23,12 +23,12 @@ export class ArchitecturalScanner {
   }
 
   init() {
-    // Periodic auto scan every 32 seconds
+    // Controlled occasional auto scan every 36 seconds
     this.autoScanTimer = setInterval(() => {
       if (!this.isScanning) {
         this.triggerScan();
       }
-    }, 32000);
+    }, 36000);
   }
 
   triggerScan() {
@@ -36,10 +36,10 @@ export class ArchitecturalScanner {
     this.isScanning = true;
 
     this.scanLayer.classList.add('scanning');
-    audio.playScanPing(1.15);
+    audio.playScanPing(1.1);
 
     const startTime = performance.now();
-    const duration = 2600; // 2.6s elegant sweep
+    const duration = 2500; // 2.5s graceful sweep
 
     let towerTriggered = false;
 
@@ -47,19 +47,19 @@ export class ArchitecturalScanner {
       const elapsed = currentTime - startTime;
       const progress = Math.min(1, elapsed / duration);
       
-      // Smooth cubic ease in-out
+      // Smooth cubic easing
       const eased = progress < 0.5 
         ? 2 * progress * progress 
         : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
-      const percent = eased * 106; // 0% to 106%
+      const percent = eased * 105;
 
       if (this.beamLine) {
         this.beamLine.style.transform = `translateX(${percent}%)`;
         this.beamLine.style.left = '0%';
       }
       if (this.beamGlow) {
-        this.beamGlow.style.transform = `translateX(calc(${percent}% - 140px))`;
+        this.beamGlow.style.transform = `translateX(calc(${percent}% - 120px))`;
         this.beamGlow.style.left = '0%';
       }
 
@@ -67,17 +67,17 @@ export class ArchitecturalScanner {
       const beamFraction = percent / 100;
       this.cadNodes.forEach((node) => {
         const cx = parseFloat(node.getAttribute('cx')) / CONFIG.geometry.width;
-        if (Math.abs(cx - beamFraction) < 0.045) {
+        if (Math.abs(cx - beamFraction) < 0.04) {
           node.setAttribute('fill', '#ffffff');
-          node.setAttribute('r', '2.8');
+          node.setAttribute('r', '2.5');
         } else {
           node.setAttribute('fill', '#38bdf8');
           node.setAttribute('r', '1.8');
         }
       });
 
-      // Pulse clock tower as beam sweeps across it (around 62.5%)
-      if (!towerTriggered && beamFraction >= 0.58 && beamFraction <= 0.68) {
+      // Sympathetic pulse on clock tower as beam sweeps across it
+      if (!towerTriggered && beamFraction >= 0.59 && beamFraction <= 0.67) {
         towerTriggered = true;
         if (this.clockTower) {
           this.clockTower.pulseTower();
@@ -99,7 +99,6 @@ export class ArchitecturalScanner {
     if (this.scanLayer) {
       this.scanLayer.classList.remove('scanning');
     }
-    // Reset nodes
     this.cadNodes.forEach((node) => {
       node.setAttribute('fill', '#38bdf8');
       node.setAttribute('r', '1.8');

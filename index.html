@@ -12,10 +12,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
   
   <!-- Core Design System & Animation Layers -->
-  <link rel="stylesheet" href="css/main.css?v=2.2">
-  <link rel="stylesheet" href="css/reveal.css?v=2.2">
-  <link rel="stylesheet" href="css/building.css?v=2.2">
-  <link rel="stylesheet" href="css/hud.css?v=2.2">
+  <link rel="stylesheet" href="css/main.css?v=3.0">
+  <link rel="stylesheet" href="css/reveal.css?v=3.0">
+  <link rel="stylesheet" href="css/building.css?v=3.0">
+  <link rel="stylesheet" href="css/hud.css?v=3.0">
 </head>
 <body data-lighting="night">
 
@@ -75,13 +75,15 @@
           <!-- Layer 1: Ambient Sky Glow -->
           <div class="parallax-layer layer-sky" aria-hidden="true"></div>
 
-          <!-- Layer 2: Main Facade Photograph -->
+          <!-- Layer 2: Main Facade Photograph (The Visual Hero) -->
           <div class="parallax-layer layer-facade">
             <img 
               id="building-img"
               class="building-image" 
               src="bhu-building.webp" 
               alt="Iconic IIT (BHU) Varanasi heritage building with its majestic Rajput-style clock tower and colonnades"
+              width="750"
+              height="500"
               loading="eager"
             >
           </div>
@@ -136,8 +138,8 @@
               <line class="cad-line cad-right_wing" x1="550" y1="435" x2="740" y2="435" />
               
               <!-- Precision CAD Survey Nodes -->
-              <circle class="cad-node cad-tower" cx="469" cy="75" r="2.4" />
-              <circle class="cad-node cad-tower" cx="469" cy="148" r="2.4" />
+              <circle class="cad-node cad-tower" cx="469" cy="75" r="2.2" />
+              <circle class="cad-node cad-tower" cx="469" cy="148" r="2.2" />
               <circle class="cad-node cad-central" cx="440" cy="218" r="1.8" />
               <circle class="cad-node cad-central" cx="498" cy="218" r="1.8" />
               <circle class="cad-node cad-right_wing" cx="550" cy="218" r="1.8" />
@@ -251,6 +253,6 @@
   </main>
 
   <!-- ES6 Modular Coordinator -->
-  <script type="module" src="js/main.js?v=2.2"></script>
+  <script type="module" src="js/main.js?v=3.0"></script>
 </body>
 </html>

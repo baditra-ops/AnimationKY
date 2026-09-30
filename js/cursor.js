@@ -1,6 +1,6 @@
 /**
- * Precision Architectural Caliper Cursor
- * High-performance lerped ring follower with contextual state transitions.
+ * Precision Architectural Caliper Cursor (Final Polish)
+ * Restrained hairline circular follower with smooth inertia.
  */
 
 export class CustomCursor {
@@ -19,7 +19,6 @@ export class CustomCursor {
   }
 
   init() {
-    // Only initialize on devices that support hover
     if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
       return;
     }
@@ -41,7 +40,6 @@ export class CustomCursor {
 
   startLoop() {
     const loop = () => {
-      // Lerp ring towards cursor position
       this.ringX += (this.mouseX - this.ringX) * 0.18;
       this.ringY += (this.mouseY - this.ringY) * 0.18;
 

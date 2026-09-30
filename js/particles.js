@@ -1,5 +1,5 @@
 /**
- * Ambient Atmospheric Particle System
+ * Ambient Atmospheric Particle System (Final Polish)
  * Restrained lightweight 2D Canvas rendering of floating dust motes and micro-nodes.
  */
 
@@ -29,7 +29,6 @@ export class ParticleSystem {
     this.resize();
     window.addEventListener('resize', () => this.resize());
 
-    // Generate restrained set of particles
     for (let i = 0; i < this.maxParticles; i++) {
       this.particles.push(this.createParticle());
     }
@@ -40,19 +39,19 @@ export class ParticleSystem {
   }
 
   createParticle() {
-    const isNode = Math.random() > 0.82;
+    const isNode = Math.random() > 0.85;
     return {
       x: Math.random() * this.width,
       y: Math.random() * this.height,
-      radius: isNode ? Math.random() * 1.4 + 1.1 : Math.random() * 1.1 + 0.5,
+      radius: isNode ? Math.random() * 1.3 + 0.9 : Math.random() * 0.9 + 0.4,
       speedX: (Math.random() - 0.5) * CONFIG.particles.maxSpeedX,
-      speedY: -Math.random() * CONFIG.particles.maxSpeedY - 0.08, // Subtle upward drift
-      alpha: Math.random() * 0.45 + 0.15,
-      maxAlpha: Math.random() * 0.45 + 0.25,
-      alphaSpeed: (Math.random() * 0.008 + 0.004) * (Math.random() > 0.5 ? 1 : -1),
-      depth: Math.random() * 0.65 + 0.35,
+      speedY: -Math.random() * CONFIG.particles.maxSpeedY - 0.06,
+      alpha: Math.random() * 0.4 + 0.12,
+      maxAlpha: Math.random() * 0.4 + 0.22,
+      alphaSpeed: (Math.random() * 0.006 + 0.003) * (Math.random() > 0.5 ? 1 : -1),
+      depth: Math.random() * 0.6 + 0.35,
       isNode: isNode,
-      color: isNode ? '56, 189, 248' : '251, 191, 36' // Cyan node or Amber stone mote
+      color: isNode ? '56, 189, 248' : '245, 158, 11'
     };
   }
 
@@ -79,11 +78,10 @@ export class ParticleSystem {
       p.y += p.speedY;
 
       p.alpha += p.alphaSpeed;
-      if (p.alpha > p.maxAlpha || p.alpha < 0.1) {
+      if (p.alpha > p.maxAlpha || p.alpha < 0.08) {
         p.alphaSpeed = -p.alphaSpeed;
       }
 
-      // Seamless wrap-around
       if (p.y < -10) {
         p.y = this.height + 10;
         p.x = Math.random() * this.width;
@@ -91,21 +89,18 @@ export class ParticleSystem {
       if (p.x < -10) p.x = this.width + 10;
       if (p.x > this.width + 10) p.x = -10;
 
-      // Subtle parallax response
-      const renderX = p.x + this.parallaxX * 28 * p.depth;
-      const renderY = p.y + this.parallaxY * 20 * p.depth;
+      const renderX = p.x + this.parallaxX * 22 * p.depth;
+      const renderY = p.y + this.parallaxY * 16 * p.depth;
 
-      // Draw particle
       this.ctx.beginPath();
       this.ctx.arc(renderX, renderY, p.radius, 0, Math.PI * 2);
       this.ctx.fillStyle = `rgba(${p.color}, ${Math.max(0, Math.min(1, p.alpha))})`;
       this.ctx.fill();
 
-      // Delicate halo for architectural micro-nodes
       if (p.isNode) {
         this.ctx.beginPath();
-        this.ctx.arc(renderX, renderY, p.radius * 2.2, 0, Math.PI * 2);
-        this.ctx.strokeStyle = `rgba(${p.color}, ${p.alpha * 0.3})`;
+        this.ctx.arc(renderX, renderY, p.radius * 2.0, 0, Math.PI * 2);
+        this.ctx.strokeStyle = `rgba(${p.color}, ${p.alpha * 0.25})`;
         this.ctx.lineWidth = 0.5;
         this.ctx.stroke();
       }

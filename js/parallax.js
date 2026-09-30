@@ -28,7 +28,7 @@ export class ParallaxEngine {
     this.currentX = 0;
     this.currentY = 0;
 
-    // Relative light source coordinates within building (0% to 100%)
+    // Relative light coordinates (0% to 100%)
     this.lightTargetX = CONFIG.geometry.clockTower.xPercent;
     this.lightTargetY = CONFIG.geometry.clockTower.yPercent;
     this.lightCurrentX = CONFIG.geometry.clockTower.xPercent;
@@ -50,7 +50,9 @@ export class ParallaxEngine {
 
   bindEvents() {
     window.addEventListener('mousemove', (e) => {
-      if (!this.isEnabled) return;
+      if (!this.isEnabled || (this.sceneController && this.sceneController.getState() !== 'INTERACTIVE')) {
+        return;
+      }
       const winW = window.innerWidth;
       const winH = window.innerHeight;
 
@@ -84,7 +86,9 @@ export class ParallaxEngine {
 
     if (window.DeviceOrientationEvent) {
       window.addEventListener('deviceorientation', (e) => {
-        if (!this.isEnabled || !e.gamma) return;
+        if (!this.isEnabled || !e.gamma || (this.sceneController && this.sceneController.getState() !== 'INTERACTIVE')) {
+          return;
+        }
         this.targetX = Math.max(-1, Math.min(1, e.gamma / 22));
         this.targetY = Math.max(-1, Math.min(1, (e.beta - 42) / 22));
       }, { passive: true });
@@ -111,9 +115,13 @@ export class ParallaxEngine {
   }
 
   updatePhysics() {
+    const isInteractive = this.sceneController && this.sceneController.getState() === 'INTERACTIVE';
+    const effectiveTargetX = isInteractive ? this.targetX : 0;
+    const effectiveTargetY = isInteractive ? this.targetY : 0;
+
     const lerp = CONFIG.parallax.lerpFactor;
-    this.currentX += (this.targetX - this.currentX) * lerp;
-    this.currentY += (this.targetY - this.currentY) * lerp;
+    this.currentX += (effectiveTargetX - this.currentX) * lerp;
+    this.currentY += (effectiveTargetY - this.currentY) * lerp;
 
     const lightLerp = CONFIG.parallax.lightLerpFactor;
     this.lightCurrentX += (this.lightTargetX - this.lightCurrentX) * lightLerp;
@@ -152,23 +160,23 @@ export class ParallaxEngine {
     const y = this.currentY;
 
     if (this.blueprintBg) {
-      this.blueprintBg.style.transform = `translate3d(${(x * -10).toFixed(1)}px, ${(y * -8).toFixed(1)}px, 0)`;
+      this.blueprintBg.style.transform = `translate3d(${(x * -8).toFixed(1)}px, ${(y * -6).toFixed(1)}px, 0)`;
     }
 
     if (this.layerSky) {
-      this.layerSky.style.transform = `translate3d(${(x * -14).toFixed(1)}px, ${(y * -10).toFixed(1)}px, 15px)`;
+      this.layerSky.style.transform = `translate3d(${(x * -11).toFixed(1)}px, ${(y * -8).toFixed(1)}px, 12px)`;
     }
 
     if (this.layerFacade) {
-      this.layerFacade.style.transform = `translate3d(${(x * 12).toFixed(1)}px, ${(y * 10).toFixed(1)}px, 35px)`;
+      this.layerFacade.style.transform = `translate3d(${(x * 9).toFixed(1)}px, ${(y * 7).toFixed(1)}px, 28px)`;
     }
 
     if (this.layerTower) {
-      this.layerTower.style.transform = `translate3d(${(x * 18).toFixed(1)}px, ${(y * 14).toFixed(1)}px, 60px)`;
+      this.layerTower.style.transform = `translate3d(${(x * 14).toFixed(1)}px, ${(y * 11).toFixed(1)}px, 48px)`;
     }
 
     if (this.layerSchematic) {
-      this.layerSchematic.style.transform = `translate3d(${(x * 22).toFixed(1)}px, ${(y * 18).toFixed(1)}px, 75px)`;
+      this.layerSchematic.style.transform = `translate3d(${(x * 17).toFixed(1)}px, ${(y * 14).toFixed(1)}px, 60px)`;
     }
 
     if (this.layersContainer) {

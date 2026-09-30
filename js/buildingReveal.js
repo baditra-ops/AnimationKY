@@ -1,6 +1,7 @@
 /**
- * Multi-Stage Building Reveal & Wow Moment Orchestrator
- * Stages A through E, active virtual camera flight, and climactic Wow Moment.
+ * Multi-Stage Building Reveal & Wow Moment Choreographer
+ * Orchestrates Stages A through E, active virtual camera flight,
+ * and the climactic Wow Moment.
  */
 
 import { CONFIG } from './config.js';
@@ -27,24 +28,32 @@ export class BuildingReveal {
 
   start() {
     this.clearTimeouts();
+    if (this.sceneController) {
+      this.sceneController.setState('INTRO');
+    }
+
     this.runProgress(() => {
       // Transition out of init screen
       this.initScreen.classList.add('hidden');
       audio.playBootChime();
 
-      // Stage A — Silhouette (Camera Distant: 0.80x)
+      if (this.sceneController) {
+        this.sceneController.setState('REVEAL');
+      }
+
+      // Stage A — Silhouette (Camera Distant: 0.84x)
       this.schedule(() => {
         this.setStage('a', 'STAGE A // SILHOUETTE');
         if (this.sceneController) {
-          this.sceneController.setRevealCamera(0.80, 26, 0);
+          this.sceneController.setRevealCamera(0.84, 22, 0);
         }
       }, 200);
 
-      // Stage B — Structural Reveal (Camera Approaches: 0.92x, Directional Wipe)
+      // Stage B — Structural Reveal (Camera Approaches: 0.93x, Directional Wipe)
       this.schedule(() => {
         this.setStage('b', 'STAGE B // STRUCTURAL REVEAL');
         if (this.sceneController) {
-          this.sceneController.setRevealCamera(0.92, 14, 0);
+          this.sceneController.setRevealCamera(0.93, 12, 0);
         }
       }, 1200);
 
@@ -52,16 +61,16 @@ export class BuildingReveal {
       this.schedule(() => {
         this.setStage('c', 'STAGE C // ARCHITECTURAL CONTOURS');
         if (this.sceneController) {
-          this.sceneController.setRevealCamera(1.02, 6, -6);
+          this.sceneController.setRevealCamera(1.02, 5, -6);
         }
         this.onStageChange('drawCAD');
       }, 2400);
 
-      // Stage D — Clock Tower Hero Focus (Camera pans to Clock Tower: 1.10x)
+      // Stage D — Clock Tower Hero Focus (Camera pans to Clock Tower: 1.06x)
       this.schedule(() => {
-        this.setStage('d', 'STAGE D // CLOCK TOWER HERO FOCUS');
+        this.setStage('d', 'STAGE D // ARCHITECTURAL LIGHT SWEEP');
         if (this.sceneController) {
-          this.sceneController.setRevealCamera(1.10, 0, -22);
+          this.sceneController.setRevealCamera(1.06, 2, -14);
         }
         this.triggerLightSweep();
         audio.playTowerBeacon();
@@ -75,7 +84,7 @@ export class BuildingReveal {
         }
       }, 4800);
 
-      // The "WOW MOMENT"
+      // The "WOW MOMENT" (Stage F)
       this.schedule(() => {
         this.triggerWowMoment();
       }, 5800);
@@ -110,7 +119,11 @@ export class BuildingReveal {
   triggerWowMoment() {
     if (!this.stageContainer) return;
     
-    // Calm pause then golden aura bloom
+    if (this.sceneController) {
+      this.sceneController.setState('WOW_MOMENT');
+      this.sceneController.setRevealCamera(1.01, 0, 0);
+    }
+
     this.stageContainer.classList.add('wow-moment');
     if (this.hudStatus) {
       this.hudStatus.textContent = 'HERITAGE ACTIVE // SYSTEM ONLINE';
@@ -119,11 +132,11 @@ export class BuildingReveal {
     // Play elegant harmonic audio chord
     audio.playWowChord();
 
-    // After wow moment settles, release camera to user control
+    // Settle into full interactive state
     this.schedule(() => {
       this.stageContainer.classList.remove('wow-moment');
       if (this.sceneController) {
-        this.sceneController.releaseRevealControl();
+        this.sceneController.setState('INTERACTIVE');
       }
       if (this.explorePrompt) {
         this.explorePrompt.classList.add('visible');
@@ -142,7 +155,7 @@ export class BuildingReveal {
         if (this.progressBar) this.progressBar.style.width = '100%';
         if (this.percentText) this.percentText.textContent = '100%';
         if (this.statusText) this.statusText.textContent = 'SYSTEM ONLINE';
-        setTimeout(callback, 240);
+        setTimeout(callback, 220);
         return;
       }
 
@@ -160,7 +173,7 @@ export class BuildingReveal {
           this.statusText.textContent = 'INITIALIZING ARCHITECTURAL SCENE...';
         }
       }
-    }, 38);
+    }, 36);
   }
 
   replay() {
@@ -180,8 +193,8 @@ export class BuildingReveal {
       'wow-moment'
     );
     if (this.sceneController) {
-      this.sceneController.isRevealControlled = true;
-      this.sceneController.setRevealCamera(0.80, 26, 0);
+      this.sceneController.setState('INTRO');
+      this.sceneController.setRevealCamera(0.84, 22, 0);
     }
     this.start();
   }

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   IIT BHU Architectural Experience - Advanced Multi-Stage Reveal & Wow Moment
+   IIT BHU Architectural Experience - Reveal Sequence & Wow Moment (Final Polish)
    ========================================================================== */
 
 /* Stage 0: Initial Screen & System Calibration */
@@ -25,12 +25,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .init-crest-symbol {
-  width: 50px;
-  height: 50px;
+  width: 46px;
+  height: 46px;
   position: relative;
   display: flex;
   align-items: center;
@@ -42,26 +42,26 @@
   width: 100%;
   height: 100%;
   stroke: var(--accent-cyan);
-  filter: drop-shadow(0 0 14px var(--accent-cyan-glow));
+  filter: drop-shadow(0 0 10px var(--accent-cyan-glow));
 }
 
 .init-title {
   font-family: var(--font-display);
-  font-size: 2.3rem;
+  font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: 0.52em;
   color: var(--text-primary);
   text-indent: 0.52em;
   text-transform: uppercase;
-  background: linear-gradient(180deg, #ffffff 25%, #94a3b8 100%);
+  background: linear-gradient(180deg, #ffffff 20%, #94a3b8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.22));
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.18));
 }
 
 .init-subtitle {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.32em;
   color: var(--accent-cyan);
   text-transform: uppercase;
@@ -69,11 +69,11 @@
 }
 
 .init-progress-wrap {
-  margin-top: 34px;
-  width: 250px;
+  margin-top: 32px;
+  width: 240px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .init-progress-bar-bg {
@@ -92,7 +92,7 @@
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, transparent, var(--accent-cyan), #ffffff);
-  box-shadow: 0 0 10px var(--accent-cyan-glow);
+  box-shadow: 0 0 8px var(--accent-cyan-glow);
   transition: width 0.12s linear;
 }
 
@@ -100,7 +100,7 @@
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.64rem;
   color: var(--text-muted);
   letter-spacing: 0.12em;
 }
@@ -110,79 +110,69 @@
 }
 
 /* ==========================================================================
-   Multi-Stage Architectural Reveal (Stages A to E + Virtual Camera)
+   Multi-Stage Architectural Reveal (Stages A to E)
    ========================================================================== */
 
-/* Stage Viewport Container Base State (Virtual Camera Distant) */
 .stage-container {
   opacity: 0;
-  /* Virtual camera starts slightly distant with small perspective tilt */
-  transform: perspective(1200px) scale(0.92) translateY(18px) rotateX(2.5deg);
-  filter: blur(14px) brightness(0.2) contrast(1.4);
+  filter: blur(12px) brightness(0.25) contrast(1.35);
   transition: 
-    opacity 1.5s var(--ease-cinematic),
-    transform 1.8s var(--ease-cinematic),
-    filter 1.6s var(--ease-cinematic);
+    opacity 1.4s var(--ease-cinematic),
+    filter 1.5s var(--ease-cinematic);
 }
 
-/* STAGE A — SILHOUETTE: Faint architectural outline appears */
+/* STAGE A — SILHOUETTE */
 .stage-container.reveal-stage-a {
-  opacity: 0.42;
-  transform: perspective(1200px) scale(0.94) translateY(12px) rotateX(1.8deg);
-  filter: blur(9px) brightness(0.36) contrast(1.55);
+  opacity: 0.45;
+  filter: blur(8px) brightness(0.38) contrast(1.5);
 }
 
-/* STAGE B — STRUCTURAL REVEAL: Directional reveal wiping across facade */
+/* STAGE B — STRUCTURAL REVEAL */
 .stage-container.reveal-stage-b {
-  opacity: 0.72;
-  transform: perspective(1200px) scale(0.965) translateY(6px) rotateX(1.0deg);
-  filter: blur(4.5px) brightness(0.68) contrast(1.25);
+  opacity: 0.75;
+  filter: blur(4px) brightness(0.7) contrast(1.2);
 }
 
-/* Directional Structural Wipe Mask applied to Facade during Stage B */
+/* Directional Structural Wipe */
 .stage-container.reveal-stage-b .building-image {
-  animation: structuralWipe 1.4s var(--ease-cinematic) forwards;
+  animation: structuralWipe 1.3s var(--ease-cinematic) forwards;
 }
 
-/* STAGE C — DETAIL: Architecture becomes crisp and sharp */
+/* STAGE C — DETAIL SHARPNESS */
 .stage-container.reveal-stage-c {
-  opacity: 0.88;
-  transform: perspective(1200px) scale(0.985) translateY(2px) rotateX(0.4deg);
-  filter: blur(1px) brightness(0.88) contrast(1.12);
+  opacity: 0.9;
+  filter: blur(1px) brightness(0.9) contrast(1.1);
 }
 
-/* STAGE D — ARCHITECTURAL LIGHT: Warm visualization light wash passes */
+/* STAGE D — ARCHITECTURAL LIGHT */
 .stage-container.reveal-stage-d {
   opacity: 0.98;
-  transform: perspective(1200px) scale(0.995) translateY(0px) rotateX(0.1deg);
-  filter: blur(0px) brightness(1.05) contrast(1.06);
+  filter: blur(0px) brightness(1.04) contrast(1.05);
 }
 
-/* STAGE E — FULL REVEAL: Crisp natural architectural appearance */
+/* STAGE E — FULL NATURAL REVEAL */
 .stage-container.reveal-stage-e {
   opacity: 1;
-  transform: perspective(1200px) scale(1) translateY(0px) rotateX(0deg);
   filter: blur(0px) brightness(1.0) contrast(1.0);
 }
 
 /* ==========================================================================
-   Architectural Light Sweep (Realistic Visualization Sun/Light Wash)
+   Architectural Light Sweep (Realistic Sunlight Wash)
    ========================================================================== */
 
 .reveal-light-sweep {
   position: absolute;
-  inset: -15%;
+  inset: -10%;
   pointer-events: none;
   z-index: 12;
-  /* Natural architectural wash: warm ambient sunlight edge */
   background: linear-gradient(
     108deg,
     transparent 0%,
     transparent 42%,
-    rgba(251, 191, 36, 0.08) 46%,
-    rgba(255, 255, 255, 0.32) 49.5%,
-    rgba(245, 158, 11, 0.22) 51%,
-    rgba(56, 189, 248, 0.06) 55%,
+    rgba(251, 191, 36, 0.06) 46%,
+    rgba(255, 255, 255, 0.28) 49.5%,
+    rgba(245, 158, 11, 0.18) 51.5%,
+    rgba(56, 189, 248, 0.04) 55%,
     transparent 62%,
     transparent 100%
   );
@@ -195,10 +185,9 @@
 }
 
 /* ==========================================================================
-   THE "WOW MOMENT" (Stage F - The Building Comes Alive)
+   THE "WOW MOMENT" (Stage F - Harmonized Climax)
    ========================================================================== */
 
-/* Moment 1: Clock Tower Golden Luminescence Bloom */
 .stage-container.wow-moment .clock-tower-anchor .tower-reticle-ping {
   animation: towerWowBloom 2.4s var(--ease-cinematic) forwards;
 }
@@ -207,24 +196,22 @@
   animation: coreWowFlash 2.4s var(--ease-cinematic) forwards;
 }
 
-/* Moment 2: Delicate SVG Contour Lines Illuminate */
 .stage-container.wow-moment .cad-line-hero {
   stroke: var(--accent-amber);
-  stroke-width: 1.4;
-  filter: drop-shadow(0 0 6px var(--accent-amber-glow));
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 5px var(--accent-amber-glow));
   transition: all 1.2s var(--ease-cinematic);
 }
 
-/* Moment 3: Facade subtle resonance */
 .stage-container.wow-moment .layers-container {
   box-shadow: 
     0 25px 60px -12px rgba(0, 0, 0, 0.9),
-    0 0 55px -6px rgba(245, 158, 11, 0.28);
-  transition: box-shadow 1.5s var(--ease-cinematic);
+    0 0 45px -8px rgba(245, 158, 11, 0.24);
+  transition: box-shadow 1.4s var(--ease-cinematic);
 }
 
 /* ==========================================================================
-   Interactive Discovery Prompt ("MOVE TO EXPLORE")
+   Interactive Discovery Prompt
    ========================================================================== */
 
 .explore-prompt {
@@ -236,8 +223,8 @@
   align-items: center;
   gap: 10px;
   padding: 6px 16px;
-  background: rgba(10, 15, 26, 0.82);
-  border: 1px solid rgba(56, 189, 248, 0.22);
+  background: rgba(8, 12, 20, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.2);
   border-radius: 20px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -248,7 +235,7 @@
 }
 
 .explore-prompt.visible {
-  opacity: 0.9;
+  opacity: 0.92;
   transform: translateX(-50%) translateY(0);
 }
 
@@ -287,10 +274,7 @@
   text-transform: uppercase;
 }
 
-/* ==========================================================================
-   Keyframes
-   ========================================================================== */
-
+/* Keyframes */
 @keyframes structuralWipe {
   0% {
     clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
@@ -324,16 +308,16 @@
     box-shadow: 0 0 0 rgba(245, 158, 11, 0);
   }
   40% {
-    transform: translate(-50%, -50%) scale(1.45);
+    transform: translate(-50%, -50%) scale(1.35);
     border-color: var(--accent-amber);
-    box-shadow: 0 0 35px var(--accent-amber-glow), inset 0 0 15px var(--accent-amber-glow);
+    box-shadow: 0 0 28px var(--accent-amber-glow), inset 0 0 12px var(--accent-amber-glow);
     opacity: 1;
   }
   100% {
     transform: translate(-50%, -50%) scale(1);
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
-    opacity: 0.55;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+    opacity: 0.5;
   }
 }
 
@@ -343,9 +327,9 @@
     background: var(--accent-amber);
   }
   40% {
-    transform: translate(-50%, -50%) scale(2.0);
+    transform: translate(-50%, -50%) scale(1.8);
     background: #ffffff;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.9), 0 0 45px var(--accent-amber-glow);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 35px var(--accent-amber-glow);
   }
 }
 
@@ -357,5 +341,17 @@
   50% {
     transform: translateY(4px);
     opacity: 0.2;
+  }
+}
+
+@keyframes pulseBeacon {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+    filter: drop-shadow(0 0 14px var(--accent-cyan-glow));
   }
 }
