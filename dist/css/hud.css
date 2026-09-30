@@ -1,0 +1,309 @@
+/* ==========================================================================
+   IIT BHU Architectural Experience - HUD Overlays, Dock & Cursor (Final Polish)
+   ========================================================================== */
+
+/* Top Architectural Telemetry Bar */
+.hud-header {
+  position: absolute;
+  top: 22px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.hud-brand-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hud-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-main-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.28em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.hud-badge {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(56, 189, 248, 0.09);
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  color: var(--accent-cyan);
+}
+
+.hud-coords {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary);
+  display: flex;
+  gap: 12px;
+}
+
+.hud-coords span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-status-block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary);
+}
+
+.status-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+  animation: pulseGreen 2.2s infinite ease-in-out;
+}
+
+/* Minimalist Architectural Floating Control Dock */
+.hud-dock-wrapper {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-dock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  background: rgba(8, 12, 20, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 30px;
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.65),
+    0 0 16px rgba(56, 189, 248, 0.06);
+}
+
+.dock-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.22s var(--ease-smooth);
+}
+
+.dock-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+}
+
+.dock-btn:hover {
+  color: var(--text-primary);
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.28);
+}
+
+.dock-btn.active {
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.14);
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.dock-divider {
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Custom Architectural Caliper Cursor */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background: #ffffff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  transition: background-color 0.2s ease;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 0.8px solid var(--accent-cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.22s var(--ease-smooth), height 0.22s var(--ease-smooth), border-color 0.22s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-cursor-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9997;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  color: var(--accent-amber);
+  background: rgba(6, 9, 16, 0.88);
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  transform: translate(22px, 12px);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+body.cursor-hover-building .custom-cursor-ring {
+  width: 40px;
+  height: 40px;
+  border-color: rgba(56, 189, 248, 0.7);
+  border-style: dashed;
+}
+
+body.cursor-hover-tower .custom-cursor-ring {
+  width: 50px;
+  height: 50px;
+  border-color: var(--accent-amber);
+  border-style: solid;
+  box-shadow: 0 0 12px var(--accent-amber-glow);
+}
+
+body.cursor-hover-tower .custom-cursor-dot {
+  background: var(--accent-amber);
+}
+
+body.cursor-hover-tower .custom-cursor-label {
+  opacity: 1;
+}
+
+/* Magnetic Cursor Elastic States */
+body.cursor-magnetic .custom-cursor-ring {
+  transition: width 0.22s var(--ease-cinematic), height 0.22s var(--ease-cinematic), border-color 0.2s ease, border-radius 0.2s ease;
+}
+
+body.cursor-magnetic-lock .custom-cursor-ring {
+  width: 52px;
+  height: 52px;
+  border-color: var(--accent-amber);
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 18px var(--accent-amber-glow), inset 0 0 8px rgba(245, 158, 11, 0.25);
+}
+
+body.cursor-magnetic-lock .custom-cursor-dot {
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff;
+  transform: translate(-50%, -50%) scale(1.35);
+}
+
+body.cursor-magnetic-btn .custom-cursor-ring {
+  width: 50px;
+  height: 38px;
+  border-radius: 20px;
+  border-color: var(--accent-cyan);
+  border-style: solid;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+}
+
+/* Touch device media query */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring,
+  .custom-cursor-label {
+    display: none !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hud-header {
+    top: 14px;
+    left: 16px;
+    right: 16px;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .hud-main-title {
+    font-size: 0.92rem;
+  }
+  
+  .hud-dock-wrapper {
+    bottom: 14px;
+    width: 94%;
+  }
+  
+  .hud-dock {
+    width: 100%;
+    justify-content: space-around;
+    padding: 5px 4px;
+  }
+  
+  .dock-btn {
+    padding: 6px 8px;
+    font-size: 0.58rem;
+  }
+  
+  .dock-btn span {
+    display: none;
+  }
+}
+
+@keyframes pulseGreen {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
