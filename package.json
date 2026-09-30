@@ -1,0 +1,19 @@
+{
+  "name": "iit-bhu-animation-challenge",
+  "version": "1.0.0",
+  "description": "IIT BHU Architectural Experience - Animation Challenge",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static build ready'",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "iit-bhu",
+    "animation",
+    "kashiyatra",
+    "css-animation",
+    "javascript"
+  ],
+  "author": "Baditra Choudhury",
+  "license": "MIT"
+}
