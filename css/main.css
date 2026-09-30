@@ -1,0 +1,165 @@
+/* ==========================================================================
+   IIT BHU Architectural Experience - Core Design System & Tokens
+   ========================================================================== */
+
+:root {
+  /* Color Palette - Dark Architectural Obsidian & Heritage Tones */
+  --bg-dark: #05070b;
+  --bg-deep: #090d16;
+  --bg-card: rgba(13, 19, 32, 0.65);
+  
+  --accent-cyan: #38bdf8;
+  --accent-cyan-dim: rgba(56, 189, 248, 0.25);
+  --accent-cyan-glow: rgba(56, 189, 248, 0.6);
+  
+  --accent-amber: #f59e0b;
+  --accent-amber-glow: rgba(245, 158, 11, 0.4);
+  
+  --heritage-red: #c2410c;
+  --heritage-gold: #fbbf24;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  
+  --grid-line: rgba(56, 189, 248, 0.05);
+  --grid-line-strong: rgba(56, 189, 248, 0.12);
+  
+  /* Typography */
+  --font-display: 'Cinzel', serif, system-ui;
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
+  
+  /* Transitions & Easing */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Dimensions & Spacing */
+  --stage-max-w: 1200px;
+  --stage-aspect: 1.5; /* 3:2 aspect ratio of the photograph */
+  --reticle-size: 40px;
+}
+
+/* Light / Day & Night Variation Mode */
+body[data-lighting="night"] {
+  --accent-cyan: #60a5fa;
+  --accent-amber: #e0e7ff;
+  --bg-dark: #020408;
+  --bg-deep: #050811;
+}
+
+body[data-lighting="daylight"] {
+  --accent-cyan: #38bdf8;
+  --accent-amber: #f59e0b;
+  --bg-dark: #070c16;
+  --bg-deep: #0c1424;
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* App Viewport Container */
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, var(--bg-deep) 0%, var(--bg-dark) 85%);
+  perspective: 1200px;
+}
+
+/* Architectural Radial Blueprint Grid */
+.blueprint-background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-size: 40px 40px, 40px 40px, 200px 200px, 200px 200px;
+  background-image: 
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-strong) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0) 80%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.8) 20%, rgba(0, 0, 0, 0) 80%);
+  opacity: 0.7;
+  transition: opacity 1.5s var(--ease-smooth);
+}
+
+/* Vignette Shadow Overlay */
+.cinematic-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(4, 6, 11, 0.75) 85%, rgba(2, 3, 6, 0.95) 100%);
+}
+
+/* Floating Horizon Guidelines */
+.horizon-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 55%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent-cyan-dim) 25%, var(--accent-cyan-dim) 75%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.35;
+}
+
+/* Subtle Film Grain Noise Texture */
+.ambient-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 25;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Canvas Particle Layer */
+#particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Reduced Motion Mode Support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .blueprint-background,
+  .ambient-grain {
+    opacity: 0.5 !important;
+  }
+}
